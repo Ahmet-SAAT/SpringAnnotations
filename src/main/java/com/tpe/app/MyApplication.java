@@ -36,39 +36,66 @@ public class MyApplication {
         MessageService service2 = context.getBean("smsservice", MessageService.class);
         service2.sendMessage(message);
 
-        MessageService service3=context.getBean(MailService.class);//mailservice ve DbRepo newlenmeden geldi.
+        MessageService service3 = context.getBean(MailService.class);//mailservice ve DbRepo newlenmeden geldi.
         service3.sendMessage(message);
         service3.saveMessage(message);
         //enjekte edilecek obje sayisi birden fazla ise qualifier ile isim verilip belirtilmelidir.(camelcase)
 
 
         //Random random=new Random();// bizim icin spring olustursun
-        Random random=context.getBean(Random.class);//Random.class AppConf icinde @Bean altinda yer alan bir method
+        Random random = context.getBean(Random.class);//Random.class AppConf icinde @Bean altinda yer alan bir method
         System.out.println(random.nextInt(100));
 
-       //contexte 1 tane obje olusur.Tst edelim 2 farkli olusturdum ayni mi bunlar?
+        //contexte 1 tane obje olusur.Tst edelim 2 farkli olusturdum ayni mi bunlar?
 
-        MessageService service4=context.getBean(MailService.class);
-        MessageService service5=context.getBean(MailService.class);
-      //Spring beanleri scope default:singleton
-        //singleton:tm uygulama icinde sadece tek bir bean olusur
+        MessageService service4 = context.getBean(MailService.class);
+        MessageService service5 = context.getBean(MailService.class);
+        //Spring beanleri scope default:singleton
+        //singleton:tm uygulama icinde sadece tek bir bean olusur/Banin yasam dongusunden spring sorumlu
 //prototype:her obje istendiginde yeni bir bean olusturulur/Clasta @Scope icine prototype yazilir.
+        //beanin kapatilmasindan biz sorumluyuz
 
-        if (service4==service5){
+        if (service4 == service5) {
             System.out.println("ayni referansli objeler");
             System.out.println(service4);
             System.out.println(service5);
-        } else  {
+        } else {
             System.out.println("farkli referansli");
             System.out.println(service4);
             System.out.println(service5);
         }
+
+        MessageService service6 = context.getBean(SmsService.class);
+
+        service6.sendMessage(message);
+        //singleton oldugu icin objeyi spring destroy eder
+
+        MessageService service7 = context.getBean(MailService.class);
+        service7.sendMessage(message);
+        //prototype oldugu icin biz destroy edecegizSpring etmez.
+
+     SmsService smsService=context.getBean(SmsService.class);
+     smsService.sendMessage(message);
+     smsService.printContact();
+     smsService.printProperties();
+
+
+
 
         context.close();//contextden artik obje isteyemeyeiz.getbean hata verir.
         //cunku contex container icerisinde ve kapatildiginda beanler de sonlandirilir.
 
 
 
+
+
+/*
+//tum uygulamadaki beanlerin isimleri
+        String [] beanNames=context.getBeanDefinitionNames();
+        for (String w:beanNames){
+            System.out.println(w);
+        }
+*/
 
 
     }

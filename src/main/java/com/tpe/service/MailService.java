@@ -7,9 +7,21 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 @Component//bu classtan springin obje uretmesini istiyoruz
-//@Scope("prototype") scope degisire objeler farkli olur
+@Scope("prototype") //scope degisire objeler farkli olur
 public class MailService implements MessageService {
+    @PostConstruct//classtan obje uretildikten hemen sonra bu method cagrilir
+    public void init(){
+        System.out.println("mailservice objesi olusturuluyor");
+    }
+
+    @PreDestroy//obje oldurulmesinden hemen once bu metod gelir
+    public void destroy(){
+        System.out.println("mailservice objesi sonlandirildi");
+    }
 
     //  FIELD INJECTION
 
