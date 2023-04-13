@@ -44,7 +44,7 @@ public class MailService implements MessageService {
     //CONSTRUCTOR ENJECTION
     //burada fark olarak @qualifier parametre olarak verilmeli
     private Repo repo;
-    @Autowired
+    @Autowired//classin birtane consu varsa cons enjekstionda autowired anat zorunlu degildir.
     public MailService(@Qualifier("fileRepository")Repo repo) {
         this.repo = repo;
     }
